@@ -10,7 +10,7 @@ Issue Non Fungible Tokens (NFT) on the XRPL as proposed by the [XLS-14d](https:/
 
 ### Setup
 
-Create a ".env" file similar to the one shown by the file called ".env.example". Generate credentials for each wallet from the following link: [XRP Testnet Faucet](https://xrpl.org/xrp-testnet-faucet.html).
+Create a ".env" file similar to the one shown by the file called ".env.example". Generate credentials for each wallet on the XRPL Tesnet using the following link: [XRP Testnet Faucet](https://xrpl.org/xrp-testnet-faucet.html).
 
 
 ### Routes
@@ -28,7 +28,7 @@ POST /deliver
 
 ### Outcomes
 
-Monitor updates via XRPL Block Explorer [Bithomp](https://test.bithomp.com).
+Monitor updates via XRPL Testnet Block Explorer [Bithomp](https://test.bithomp.com).
 
 
 ### Links
