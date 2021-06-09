@@ -2,6 +2,12 @@
 
 a [Sails v1](https://sailsjs.com) application
 
+
+### Description
+
+Issue Non Fungible Tokens (NFT) on the XRPL as proposed by the [XLS-14d](https://github.com/XRPLF/XRPL-Standards/discussions/30) standard.
+
+
 ### Usage
 
 POST /create
@@ -20,9 +26,7 @@ POST /deliver
 
 + [Sails framework documentation](https://sailsjs.com/get-started)
 + [Version notes / upgrading](https://sailsjs.com/documentation/upgrading)
-+ [Deployment tips](https://sailsjs.com/documentation/concepts/deployment)
 + [Community support options](https://sailsjs.com/support)
-+ [Professional / enterprise options](https://sailsjs.com/enterprise)
 
 
 ### Version info
