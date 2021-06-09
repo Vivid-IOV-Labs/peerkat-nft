@@ -19,16 +19,19 @@ const X_USER_SEED = (process.env.X_USER_SEED).toString();
 
 let seqCount = 0;
 
-const CURRENCY = '4D5920415745534F4D45204E465420F09F8E8991';
-const PROTO = "ipfs";
-const PROTOVALUE = "bafybeibvfokwnguw7nwaxbqbgkcxznxdoeyj2ug764wtk5p4dxys3k376q";
-let NFTDOMAINSTRING = "@xnft:\n" + `${PROTO}:${PROTOVALUE}\n`;
-const NFTDOMAIN = new Buffer.from(NFTDOMAINSTRING).toString('hex').toUpperCase();
+const textToHex = (_o) => {
+    return new Buffer.from(_o.text).toString('hex').toUpperCase();
+}
+
+const DOMAIN = "http://";
+const NFTDOMAIN = textToHex({ text: DOMAIN });
+
+const DOMAINVALUE = "xnft.peerkat.live   ";
+const CURRENCY = textToHex({ text: DOMAINVALUE });
 
 const X_url = 'wss://s.altnet.rippletest.net:51233';
 
 const { XrplClient } = require('xrpl-client');
-const bigInt = require("big-integer");
 
 const xrpClient = new XrplClient(X_url);
 
@@ -289,16 +292,16 @@ module.exports = {
 
         const ans = await accountset({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED });
 
-        return res.ok(ans);
+        return _requestRes(ans, res)
 
 
     },
 
     approve: async function (req, res) {
 
-        const xresp = await createTrustReceiverAndIssuer({ X_BRAND_SEED, X_BRAND_WALLET_ADDRESS });
+        const ans = await createTrustReceiverAndIssuer({ X_BRAND_SEED, X_BRAND_WALLET_ADDRESS });
 
-        return _requestRes(xresp, res)
+        return _requestRes(ans, res)
 
     },
 
@@ -323,7 +326,7 @@ module.exports = {
 
         const ans = await createTrustUserAndIssuer({ X_USER_WALLET_ADDRESS, X_USER_SEED, });
 
-        return res.ok(ans)
+        return _requestRes(ans, res)
 
     },
 
@@ -331,7 +334,7 @@ module.exports = {
 
         const ans = await sendNFTokenToUser({ X_BRAND_WALLET_ADDRESS, X_BRAND_SEED, X_USER_WALLET_ADDRESS });
 
-        return res.ok(ans)
+        return _requestRes(ans, res)
 
     }
 
