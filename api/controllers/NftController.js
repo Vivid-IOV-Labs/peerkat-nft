@@ -6,14 +6,14 @@
  */
 
 //Generate Wallets
-const X_ISSUER_WALLET_ADDRESS = 'rnEJ9vrku2BhMjuyDcTghpUrcHd9tbmEL9';
-const X_ISSUER_SEED = 'snrjEKGvfbTkjJYAg1sgfj4SBy9PX';
+const X_ISSUER_WALLET_ADDRESS = 'rGeoS539nAJzYgVfwxUwWoWv2Cz67WTGKn';
+const X_ISSUER_SEED = 'snxy7u1itMrCqnYjo1dPZ96QNrVLT';
 
-const X_BRAND_WALLET_ADDRESS = 'rBWsGjmSAZZnosg4SXYFGZwBc7vbKhvBCB';
-const X_BRAND_SEED = 'ssdTMcr8vWb2WvofMKv6JCNQRfDNz';
+const X_BRAND_WALLET_ADDRESS = 'rHk7qs3EjAzdhibtAoCW9Ubx7cVLafr7PD';
+const X_BRAND_SEED = 'snZq14hpiDV7zgHPby77WKQWPryi3';
 
-const X_USER_WALLET_ADDRESS = 'rE2YDfKDNfKJ1opqc7Ku1ni4QFvVmfjR6';
-const X_USER_SEED = 'safzK7zwtQ9fZut7CpW5hEwWXXqjZ';
+const X_USER_WALLET_ADDRESS = 'rEVQwaVr4X79HkHhkvJXyF9aqgXX68K5kJ';
+const X_USER_SEED = 'snKCZME67HHz4ZSMwxh7t15FSuPMy';
 
 const CURRENCY = '4D5920415745534F4D45204E465420F09F8E8991';
 const PROTO = "ipfs";
@@ -78,7 +78,7 @@ let txList = [{
     "Account": "rFriendToReceiveNFT...",
     "Flags": 131072,
     "LimitAmount": {
-        "currency": "4D5920415745534F4D45204E465420F09F8E8921",
+        "currency": CURRENCY,
         "issuer": X_ISSUER_WALLET_ADDRESS,
         "value": "1000000000000000e-96"
     }
@@ -87,7 +87,7 @@ let txList = [{
     "Account": "rReceivingHotWallet...",
     "Destination": "rFriendToReceiveNFT...",
     "Amount": {
-        "currency": "4D5920415745534F4D45204E465420F09F8E8921",
+        "currency": CURRENCY,
         "issuer": X_ISSUER_WALLET_ADDRESS,
         "value": "1000000000000000e-96"
     }
@@ -306,14 +306,16 @@ module.exports = {
 
     issue: async function (req, res) {
 
-
-        await issueNFToken({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED });
-        await blackholeSetRegKey({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED });
-        _sleep(10000);
-        await blackholeDisableMasterKey({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED });
+        const arr = [];
 
 
-        return res.ok({ message: 'done' })
+        arr.push(await issueNFToken({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED, X_BRAND_WALLET_ADDRESS }));
+        _sleep(5000);
+        arr.push(await blackholeSetRegKey({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED }));
+        _sleep(5000);
+        arr.push(await blackholeDisableMasterKey({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED }));
+
+        return res.ok(arr)
 
     },
 

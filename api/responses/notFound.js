@@ -17,7 +17,7 @@
  * automatically.
  */
 
-module.exports = function notFound (data, options) {
+module.exports = function notFound(data, options) {
 
   // Get access to `req`, `res`, & `sails`
   var req = this.req;
@@ -29,7 +29,7 @@ module.exports = function notFound (data, options) {
 
   // Log error to console
   if (data !== undefined) {
-    sails.log.verbose('Sending 404 ("Not Found") response: \n',data);
+    sails.log.verbose('Sending 404 ("Not Found") response: \n', data);
   }
   else sails.log.verbose('Sending 404 ("Not Found") response');
 
@@ -43,7 +43,7 @@ module.exports = function notFound (data, options) {
   // If the user-agent wants JSON, always respond with JSON
   // If views are disabled, revert to json
   if (req.wantsJSON || sails.config.hooks.views === false) {
-    return res.jsonx(data);
+    return res.json(data);
   }
 
   // If second argument is a string, we take that to mean it refers to a view.
@@ -54,9 +54,9 @@ module.exports = function notFound (data, options) {
   var viewData = data;
   if (!(viewData instanceof Error) && 'object' == typeof viewData) {
     try {
-      viewData = require('util').inspect(data, {depth: null});
+      viewData = require('util').inspect(data, { depth: null });
     }
-    catch(e) {
+    catch (e) {
       viewData = undefined;
     }
   }
@@ -78,13 +78,13 @@ module.exports = function notFound (data, options) {
       // Additionally:
       // • If the view was missing, ignore the error but provide a verbose log.
       if (err.code === 'E_VIEW_FAILED') {
-        sails.log.verbose('res.notFound() :: Could not locate view for error page (sending JSON instead).  Details: ',err);
+        sails.log.verbose('res.notFound() :: Could not locate view for error page (sending JSON instead).  Details: ', err);
       }
       // Otherwise, if this was a more serious error, log to the console with the details.
       else {
         sails.log.warn('res.notFound() :: When attempting to render error page view, an error occured (sending JSON instead).  Details: ', err);
       }
-      return res.jsonx(data);
+      return res.json(data);
     }
 
     return res.send(html);
