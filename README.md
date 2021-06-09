@@ -1,6 +1,19 @@
-# nftissuanceservice
+# NFToken Issue Service Demo
 
 a [Sails v1](https://sailsjs.com) application
+
+### Usage
+
+POST /create
+
+POST /approve
+
+POST /issue
+
+POST /claim
+
+POST /deliver
+
 
 
 ### Links

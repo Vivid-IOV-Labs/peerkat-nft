@@ -46,13 +46,6 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'POST /setup': { controller: "NftController", action: "setup", skipAssets: true },
-  // 'POST /issue': { controller: "NftController", action: "issueNFT", skipAssets: true },
-  // 'POST /send': { controller: "NftController", action: "sendNFT", skipAssets: true },
-  // 'POST /blackhole': { controller: "NftController", action: "blackhole", skipAssets: true },
-  // 'POST /blackholeMasterKey': { controller: "NftController", action: "blackholeMasterKey", skipAssets: true },
-  // 'POST /claim': { controller: "NftController", action: "claimToken", skipAssets: true },
-  // 'POST /deliver': { controller: "NftController", action: "deliverNFToken", skipAssets: true },
 
   'POST /create': { controller: "NftController", action: "create", skipAssets: true },
   'POST /approve': { controller: "NftController", action: "approve", skipAssets: true },
