@@ -6,8 +6,8 @@
  */
 
 //Generate Wallets
-const X_ISSUER_WALLET_ADDRESS = 'rJyPTvnT7CRqjPkcRNfMTVqF3AXRzfvDvh';
-const X_ISSUER_SEED = 'shLawLq2hnRDb7w9wDxNf78eThnHK';
+const X_ISSUER_WALLET_ADDRESS = 'rnEJ9vrku2BhMjuyDcTghpUrcHd9tbmEL9';
+const X_ISSUER_SEED = 'snrjEKGvfbTkjJYAg1sgfj4SBy9PX';
 
 const X_BRAND_WALLET_ADDRESS = 'rBWsGjmSAZZnosg4SXYFGZwBc7vbKhvBCB';
 const X_BRAND_SEED = 'ssdTMcr8vWb2WvofMKv6JCNQRfDNz';
@@ -15,7 +15,11 @@ const X_BRAND_SEED = 'ssdTMcr8vWb2WvofMKv6JCNQRfDNz';
 const X_USER_WALLET_ADDRESS = 'rE2YDfKDNfKJ1opqc7Ku1ni4QFvVmfjR6';
 const X_USER_SEED = 'safzK7zwtQ9fZut7CpW5hEwWXXqjZ';
 
-const CURRENCY = "4D5920415745534F4D45204E465420F09F8E8991";
+const CURRENCY = '4D5920415745534F4D45204E465420F09F8E8991';
+const PROTO = "ipfs";
+const PROTOVALUE = "bafybeibvfokwnguw7nwaxbqbgkcxznxdoeyj2ug764wtk5p4dxys3k376q";
+let NFTDOMAINSTRING = "@xnft:\n" + `${PROTO}:${PROTOVALUE}\n`;
+const NFTDOMAIN = new Buffer.from(NFTDOMAINSTRING).toString('hex').toUpperCase();
 
 const X_url = 'wss://s.altnet.rippletest.net:51233';
 
@@ -26,11 +30,20 @@ const xrpClient = new XrplClient(X_url);
 
 const lib = require('xrpl-accountlib');
 
+const _sleep = (milliseconds) => {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+        currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+}
+
 
 let txList = [{
     "TransactionType": "AccountSet",
     "Account": X_ISSUER_WALLET_ADDRESS,
-    "SetFlag": 8
+    "SetFlag": 8,
+    "Domain": NFTDOMAIN
 }, {
     "TransactionType": "TrustSet",
     "Account": "rReceivingHotWallet...",
@@ -293,17 +306,10 @@ module.exports = {
 
     issue: async function (req, res) {
 
-        function _sleep(milliseconds) {
-            const date = Date.now();
-            let currentDate = null;
-            do {
-                currentDate = Date.now();
-            } while (currentDate - date < milliseconds);
-        }
 
         await issueNFToken({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED });
         await blackholeSetRegKey({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED });
-        _sleep(1000);
+        _sleep(10000);
         await blackholeDisableMasterKey({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED });
 
 
