@@ -8,6 +8,7 @@
     "@sailshq/lodash": "^3.10.3",
     "async": "^3.2.0",
     "big-integer": "^1.6.48",
+    "dotenv": "^10.0.0",
     "lodash": "^4.17.21",
     "sails": "^1.2.4",
     "sails-hook-orm": "^2.1.1",

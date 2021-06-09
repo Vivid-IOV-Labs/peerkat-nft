@@ -5,15 +5,19 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+require('dotenv').config();
+
 //Generate Wallets
-const X_ISSUER_WALLET_ADDRESS = 'rGeoS539nAJzYgVfwxUwWoWv2Cz67WTGKn';
-const X_ISSUER_SEED = 'snxy7u1itMrCqnYjo1dPZ96QNrVLT';
+const X_ISSUER_WALLET_ADDRESS = (process.env.X_ISSUER_WALLET_ADDRESS).toString();
+const X_ISSUER_SEED = (process.env.X_ISSUER_SEED).toString();
 
-const X_BRAND_WALLET_ADDRESS = 'rHk7qs3EjAzdhibtAoCW9Ubx7cVLafr7PD';
-const X_BRAND_SEED = 'snZq14hpiDV7zgHPby77WKQWPryi3';
+const X_BRAND_WALLET_ADDRESS = (process.env.X_BRAND_WALLET_ADDRESS).toString();
+const X_BRAND_SEED = (process.env.X_BRAND_SEED).toString();
 
-const X_USER_WALLET_ADDRESS = 'rEVQwaVr4X79HkHhkvJXyF9aqgXX68K5kJ';
-const X_USER_SEED = 'snKCZME67HHz4ZSMwxh7t15FSuPMy';
+const X_USER_WALLET_ADDRESS = (process.env.X_USER_WALLET_ADDRESS).toString();
+const X_USER_SEED = (process.env.X_USER_SEED).toString();
+
+let seqCount = 0;
 
 const CURRENCY = '4D5920415745534F4D45204E465420F09F8E8991';
 const PROTO = "ipfs";
@@ -29,14 +33,6 @@ const bigInt = require("big-integer");
 const xrpClient = new XrplClient(X_url);
 
 const lib = require('xrpl-accountlib');
-
-const _sleep = (milliseconds) => {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-        currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-}
 
 
 let txList = [{
@@ -135,6 +131,8 @@ const _getAccountInfoAndFee = async (X_WALLET_ADDRESS) => {
     const x_acountinfo = await _getaccountinfo(X_WALLET_ADDRESS);
     const x_fee = await _getfee();
     const fee = (parseFloat(x_fee.drops.base_fee) * 1000000).toFixed(0) + "";
+
+    x_acountinfo.account_data.Sequence += seqCount;
 
     return { accountInfo: x_acountinfo, feeInfo: x_fee, feeValue: fee }
 
@@ -308,12 +306,14 @@ module.exports = {
 
         const arr = [];
 
-
         arr.push(await issueNFToken({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED, X_BRAND_WALLET_ADDRESS }));
-        _sleep(5000);
+
+        seqCount++;
         arr.push(await blackholeSetRegKey({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED }));
-        _sleep(5000);
+
+        seqCount++;
         arr.push(await blackholeDisableMasterKey({ X_ISSUER_WALLET_ADDRESS, X_ISSUER_SEED }));
+        seqCount = 0;
 
         return res.ok(arr)
 
